@@ -74,5 +74,13 @@ BinNodePosi(T) Splay<T>::splay(BinNodePosi(T) v) { // vÒò×î½ü·ÃÎÊ¶øĞèÉìÕ¹µÄ½ÚµãÎ
 	return v;
 } // µ÷ÕûÖ®ºóĞÂÊ÷¸ùÓ¦Îª±»ÉìÕ¹µÄ½Úµã£¬¹Ê·µ»Ø¸Ã½ÚµãµÄÎ»ÖÃÒÔ±ãÉÏ²ãº¯Êı¸üĞÂÊ÷¸ù
 
+template<typename T>
+BinNodePosi(T)& Splay<T>::search(const T& e) { // ÔÚÉìÕ¹Ê÷ÖĞ²éÕÒe
+	BinNodePosi(T) p = searchIn(BinTree<T>::_root, e, BST<T>::_hot = NULL);
+	BinTree<T>::_root = splay(p ? p : BST<T>::_hot);
+	return BinTree<T>::_root;
+} // ÓëÆäËüBST²»Í¬£¬ÎŞÂÛ²éÕÒ³É¹¦Óë·ñ£¬_root¶¼Ö¸Ïò×îºó±»·ÃÎÊµÄ½Úµã
+
+
 _DSA_END
 #endif // !__SPLAY_H__
