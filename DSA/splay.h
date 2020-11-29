@@ -81,6 +81,33 @@ BinNodePosi(T)& Splay<T>::search(const T& e) { // 在伸展树中查找e
 	return BinTree<T>::_root;
 } // 与其它BST不同，无论查找成功与否，_root都指向最后被访问的节点
 
+template<typename T>
+BinNodePosi(T) Splay<T>::insert(const T& e) { // 将关键码e插入伸展树中
+	if (!_root) { // 处理原树为空的退化情况
+		BinTree<T>::_size++;
+		return _root = new BinNode<T>(e); 
+	}
+	if (e == search(e)->data) return BinTree<T>::_root; // 确认目标节点不存在
+	_size++;
+	BinNodePosi(T) t = _root; // 创建新节点。以下调整<=7个指针已完成局部重构
+	if (BinTree<T>::_root->data < e) { // 插入树根，以t和t->rc为左、右孩子
+		t->parent = BinTree<T>::_root = new BinNode<T>(e, NULL, t, t->rc); // 2 + 3个
+		if (HasRChild(*t)) { // <= 2个
+			t->rc->parent = BinTree<T>::_root;
+			t->rc = NULL;
+		}
+	}
+	else { // 插入新根，以t->lc与t为左、右孩子
+		t->parent = BinTree<T>::_root = new BinNode<T>(e, NULL, t->lc, t); // 2 + 3个
+		if (HasLChild(*t)) { // <= 2个
+			t->lc->parent = BinTree<T>::_root;
+			t->lc = NULL;
+		}
+	}
+	BinTree<T>::updateHeightAbove(t); // 更新t及其祖先（实际上只有_root一个）的高度
+	return BinTree<T>::_root; // 新节点必然置于树根，返回之
+} // 无论e是否存在于原树中，返回时总有_root->data == e
+
 
 _DSA_END
 #endif // !__SPLAY_H__
