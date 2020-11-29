@@ -108,6 +108,35 @@ BinNodePosi(T) Splay<T>::insert(const T& e) { // 将关键码e插入伸展树中
 	return BinTree<T>::_root; // 新节点必然置于树根，返回之
 } // 无论e是否存在于原树中，返回时总有_root->data == e
 
+template<typename T>
+bool Splay<T>::remove(const T& e) { // 从伸展树中删除关键码e
+	if (!BinTree<T>::_root || (e != search(e)->data)) return false; // 若树空或目标不存在，则无法删除
+	BinNodePosi(T) w = BinTree<T>::_root; // assert: 经search()后节点e已被伸展至树根
+	if (!HasLChild(*BinTree<T>::_root)) { // 若无左子树，则直接删除
+		BinTree<T>::_root = BinTree<T>::_root->rc;
+		if (BinTree<T>::_root) {
+			BinTree<T>::_root->parent = NULL;
+		}
+	}
+	else if (!HasRChild(*BinTree<T>::_root)) { // 若无右子树，也直接删除
+		BinTree<T>::_root = BinTree<T>::_root->lc;
+		if (BinTree<T>::_root) {
+			BinTree<T>::_root->parent = NULL;
+		}
+	}
+	else { // 若左右子树同时存在，则
+		BinNodePosi(T) lTree = BinTree<T>::_root->lc;
+		lTree->parent = NULL; BinTree<T>::_root->lc = NULL; // 暂时将左子树切除
+		BinTree<T>::_root = BinTree<T>::_root->rc; BinTree<T>::_root->parent = NULL; // 只保留右子树
+		search(w->data); // 以原树根为目标，做一次（必定失败的查找）
+		// assert: 至此，右子树中最小节点必伸展至根，且（因无雷同节点）其左子树必空，于是
+		BinTree<T>::_root->lc = lTree; lTree->parent = BinTree<T>::_root; // 只需将原左子树接回原位即可
+	}
+	delete w; _size--;
+	if (BinTree<T>::_root) BinTree<T>::updateHeight(BinTree<T>::_root); // 此后，若树非空，则树根的高度需要更新
+	return true; // 返回成功标志
+} // 若目标节点存在且被删除，返回true；否则返回false
+
 
 _DSA_END
 #endif // !__SPLAY_H__
