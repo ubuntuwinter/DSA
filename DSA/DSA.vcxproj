@@ -155,6 +155,7 @@
     <ClInclude Include="pq.h" />
     <ClInclude Include="pq_complheap.h" />
     <ClInclude Include="pq_leftheap.h" />
+    <ClInclude Include="splay.h" />
     <ClInclude Include="visit.h" />
     <ClInclude Include="queue.h" />
     <ClInclude Include="queue_function.h" />
@@ -170,7 +171,6 @@
     <ClCompile Include="laby.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="RPN.cpp" />
-    <ClCompile Include="test_graphMatrix.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

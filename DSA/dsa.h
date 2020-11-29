@@ -23,6 +23,7 @@ template<typename T> class PQ_LeftHeap; // 左式堆
 template<typename Tv, typename Te> class Graph; // 图
 template<typename Tv, typename Te> class GraphMatrix; // 图：邻接矩阵
 template<typename Tv, typename Te> class GraphList; // 图：邻接表
+template<typename T> class Splay; // 伸展树
 
 template<typename T>
 void swap(T& a, T& b) { // 交换a和b的值
