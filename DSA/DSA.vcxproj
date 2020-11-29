@@ -171,6 +171,7 @@
     <ClCompile Include="laby.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="RPN.cpp" />
+    <ClCompile Include="test_splay.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
