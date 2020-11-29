@@ -147,6 +147,7 @@
     <ClInclude Include="binTree.h" />
     <ClInclude Include="bitmap.h" />
     <ClInclude Include="bst.h" />
+    <ClInclude Include="btNode.h" />
     <ClInclude Include="dsa.h" />
     <ClInclude Include="entry.h" />
     <ClInclude Include="fib.h" />
