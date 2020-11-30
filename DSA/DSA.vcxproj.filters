@@ -84,5 +84,8 @@
     <ClInclude Include="bTree.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="redblack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
