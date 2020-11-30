@@ -39,13 +39,7 @@
     <ClInclude Include="stack.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="stack_function.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="queue.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="queue_function.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="binNode.h">
@@ -90,22 +84,5 @@
     <ClInclude Include="bTree.h">
       <Filter>头文件</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="RPN.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Queen.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="laby.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="stack_function.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="queue_function.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

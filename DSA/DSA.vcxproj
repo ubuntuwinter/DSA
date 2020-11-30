@@ -160,19 +160,10 @@
     <ClInclude Include="splay.h" />
     <ClInclude Include="visit.h" />
     <ClInclude Include="queue.h" />
-    <ClInclude Include="queue_function.h" />
-    <ClInclude Include="stack_function.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="listNode.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="vector.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="queue_function.cpp" />
-    <ClCompile Include="stack_function.cpp" />
-    <ClCompile Include="laby.cpp" />
-    <ClCompile Include="Queen.cpp" />
-    <ClCompile Include="RPN.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
