@@ -105,6 +105,7 @@ static Rank fibSearch(T* A, T const& e, Rank lo, Rank hi) {
 	return -1; // 查找失败
 } // 有多个命中元素的时，不能保证返回秩最大者；查找失败时，简单地返回-1，而不能指示失败的位置
 
+/*
 // 二分查找算法（版本B）：在有序向量的区间[lo, hi)内查找e，0 <= lo <= hi <= size
 template<typename T>
 static Rank binSearch(T* A, T const& e, Rank lo, Rank hi) {
@@ -114,8 +115,8 @@ static Rank binSearch(T* A, T const& e, Rank lo, Rank hi) {
 	} // 出口时hi = lo + 1，查找区间仅含一个元素A[lo]
 	return (e == A[lo]) ? lo : -1; // 查找成功返回时对应的秩；否则统一返回-1
 } // 有多个命中元素的时，不能保证返回秩最大者；查找失败时，简单地返回-1，而不能指示失败的位置
+*/
 
-/*
 // 二分查找算法（版本C）：在有序向量的区间[lo, hi)内查找e，0 <= lo <= hi <= size
 template<typename T>
 static Rank binSearch(T* A, T const& e, Rank lo, Rank hi) {
@@ -125,7 +126,6 @@ static Rank binSearch(T* A, T const& e, Rank lo, Rank hi) {
 	} // 成功查找不能提前终止
 	return --lo; // 循环结束时，lo为大于e的元素的最小秩，故lo - 1即不大于e的元素的最大秩
 } // 有多个命中元素的时，总能保证返回秩最大者；查找失败时，能够返回失败的位置
-*/
 
 template<typename T>
 void Vector<T>::copyForm(T const* A, Rank lo, Rank hi) { // 以数组区间A[lo, hi)为蓝本复制向量
@@ -257,7 +257,7 @@ Rank Vector<T>::search(T const& e, Rank lo, Rank hi) const { // assert: 0 <= lo 
 	return (rand() % 2) ? // 按各50%概率随机使用二分查找或Fibonacci查找
 		binSearch(_elem, e, lo, hi) : fibSearch(_elem, e, lo, hi);
 		*/
-	return fibSearch(_elem, e, lo, hi);
+	return binSearch(_elem, e, lo, hi);
 }
 
 template<typename T>
