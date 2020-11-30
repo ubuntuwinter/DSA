@@ -5,6 +5,13 @@
 #include "dsa.h"
 #include "bst.h"
 _DSA_BEGIN
+#define IsBlack(p) (!(p) || (RB_BLACK == (p)->color)) // 外部节点也视作黑色
+#define IsRed(p) (!IsBlack(p)) // 非黑即红
+#define BlackHeightUpdated(x) ( /* RedBlack高度更新条件 */ \
+	(stature((x).lc) == stature((x).rc)) && \
+	((x).height == (IsRed(&x) ? stature((x).lc) : stature((x).lc) + 1)) \
+	)
+
 template<typename T>
 class RedBlack : public BST<T> { // RedBlack树模板类
 protected:
