@@ -14,7 +14,7 @@ protected:
 	BTNodePosi(T) _hot; // BTree::search()×îºó·ÃÎÊµÄ·Ç¿Õ£¨³ı·ÇÊ÷¿Õ£©µÄ½ÚµãÎ»ÖÃ
 	void release(BTNodePosi(T) v); // ÊÍ·ÅËùÓĞ½Úµã
 	void solveOverflow(BTNodePosi(T) v); // Òò²åÈë¶øÉÏÒçÖ®ºóµÄ·ÖÁÑ´¦Àí
-	void solveUnderflow(BTNodePosi(T)); // Òò²åÈë¶øÏÂÒçÖ®ºóµÄºÏ²¢´¦Àí
+	void solveUnderflow(BTNodePosi(T) v); // Òò²åÈë¶øÏÂÒçÖ®ºóµÄºÏ²¢´¦Àí
 public:
 	BTree(int order = 3) :_order(order), _size(0) { // ¹¹Ôìº¯Êı£ºÄ¬ÈÏÎª×îµÍµÄ½×
 		_root = new BTNode<T>();
@@ -61,6 +61,76 @@ void BTree<T>::solveOverflow(BTNodePosi(T) v) { // ¹Ø¼üÂë²åÈëºóÈô½ÚµãÉÏÒç£¬Ôò×ö½
 	p->key.insert(r, v->key.remove(s)); // Öáµã¹Ø¼üÂëÉÏÉı
 	p->child.insert(r + 1, u); u->parent = p; // ĞÂ½ÚµãuÓë¸¸½Úµãp»¥Áª
 	solveOverflow(p); // ÉÏÉıÒ»²ã£¬ÈçÓĞ±ØÒªÔò¼ÌĞø·ÖÁÑ¡ª¡ªÖÁ¶àµİ¹éO(logn)²ã
+}
+
+template<typename T>
+inline void BTree<T>::solveUnderflow(BTNodePosi(T) v) { // ¹Ø¼üÂëÉ¾³ıºóÈô½ÚµãÏÂÒç£¬Ôò×ö½ÚµãĞı×ª»òºÏ²¢´¦Àí
+	if ((_order + 1) >> 1 <= v->child.size()) return; // µİ¹é»ù£ºµ±Ç°½Úµã²¢Î´·¢ÉúÏÂÒç
+	BTNodePosi(T) p = v->parent;
+	if (!p) { // µİ¹é»ù£ºÒÑµ½¸ù½Úµã£¬Ã»ÓĞº¢×ÓµÄÏÂÏŞ
+		if (!v->key.size() && v->child[0]) {
+			// µ«ÌÈÈô×÷ÎªÊ÷¸ùµÄvÒÑ²»º¬¹Ø¼üÂë£¬È´ÓĞ£¨Î¨Ò»µÄ£©·Ç¿Õº¢×Ó£¬Ôò
+			_root = v->child[0]; _root->parent = NULL; // Õâ¸ö½Úµã¿É±»Ìø¹ı
+			v->child[0] = NULL; delete v; // ²¢Òò²»ÔÙÓĞÓÃ¶ø±»Ïú»Ù
+		} // ÕûÌå¸ß¶È½µµÍÒ»²ã
+		return;
+	}
+	Rank r = 0; while (p->child[r] != v) r++;
+	// È·¶¨vÊÇpµÄµÚr¸öº¢×Ó¡ª¡ª´ËÊ±v¿ÉÄÜ²»º¬¹Ø¼üÂë£¬¹Ê²»ÄÜÍ¨¹ı¹Ø¼üÂë²éÕÒ
+	// ÁíÍâ£¬ÔÚÊµÏÖÁËº¢×ÓÖ¸ÕëµÄÅĞµÈÆ÷Ö®ºó£¬Ò²¿ÉÖ±½Óµ÷ÓÃVector::find()¶¨Î»
+	// Çé¿ö1£ºÏò×óĞÖµÜ½è¹Ø¼üÂë
+	if (0 < r) { // Èôv²»ÊÇpµÄµÚÒ»¸öº¢×Ó£¬Ôò
+		BTNodePosi(T) ls = p->child[r - 1]; // ×óĞÖµÜ±Ø´æÔÚ
+		if ((_order + 1) >> 1 < ls->child.size()) { // Èô¸ÃĞÖµÜ×ã¹»¡°ÅÖ¡±£¬Ôò
+			v->key.insert(0, p->key[r - 1]); // p½è³öÒ»¸ö¹Ø¼üÂë¸øv£¨×÷Îª×îĞ¡¹Ø¼üÂë)
+			p->key[r - 1] = ls->key.remove(ls->key.size() - 1); // lsµÄ×î´ó¹Ø¼üÂë×ªÈëp
+			v->child.insert(0, ls->child.remove(ls->child.size() - 1)); // Í¬Ê±lsµÄ×îÓÒ²àº¢×Ó¹ı¼Ì¸øv
+			if (v->child[0]) v->child[0]->parent = v; // ×÷ÎªvµÄ×î×ó²àº¢×Ó
+			return; // ÖÁ´Ë£¬Í¨¹ıÓÒĞıÒÑÍê³Éµ±Ç°²ã£¨ÒÔ¼°ËùÓĞ²ã£©µÄÏÂÒç´¦Àí
+		}
+	} // ÖÁ´Ë£¬×óĞÖµÜÒªÃ´Îª¿Õ£¬ÒªÃ´Ì«¡°C¡±
+	// Çé¿ö2£ºÏòÓÒĞÖµÜ½è¹Ø¼üÂë
+	if (p->child.size() - 1 > r) { // Èôv²»ÊÇpµÄ×îºóÒ»¸öº¢×Ó£¬Ôò
+		BTNodePosi(T) rs = p->child[r + 1]; // ÓÒĞÖµÜ±ØÈ»´æÔÚ
+		if ((_order + 1) >> 1 < rs->child.size()) { // Èô¸ÃĞÖµÜ×ã¹»¡°ÅÖ¡±£¬Ôò
+			v->key.insert(v->key.size(), p->key[r]); // p½è³öÒ»¸ö¹Ø¼üÂë¸øv£¨×÷Îª×î´ó¹Ø¼üÂë£©
+			p->key[r] = rs->key.remove(0); // lsµÄ×îĞ¡¹Ø¼üÂë×ªÈëp
+			v->child.insert(v->child.size(), rs->child.remove(0)); // Í¬Ê±rsµÄ×î×ó²àº¢×Ó¹ı¼Ì¸øv
+			if (v->child[v->child.size() - 1]) { // ×÷ÎªvµÄ×îÓÒ²àº¢×Ó
+				v->child[v->child.size() - 1]->parent = v;
+			}
+			return; // ÖÁ´Ë£¬Í¨¹ı×óĞıÒÑÍê³Éµ±Ç°²ã£¨ÒÔ¼°ËùÓĞ²ã£©µÄÏÂÒç´¦Àí
+		}
+	} // ÖÁ´Ë£¬ÓÒĞÖµÜÒªÃ´Îª¿Õ£¬ÒªÃ´Ì«¡°C¡±
+	// Çé¿ö3£º×ó¡¢ÓÒĞÖµÜÒªÃ´Îª¿Õ£¨µ«²»¿ÉÄÜÍ¬Ê±£©£¬ÒªÃ´¶¼Ì«¡°C¡±¡ª¡ªºÏ²¢
+	if (0 < r) { // Óë×óĞÖµÜºÏ²¢
+		BTNodePosi(T) ls = p->child[r - 1]; // ×óĞÖµÜ±ØÈ»´æÔÚ
+		ls->key.insert(ls->key.size(), p->key.remove(r - 1)); p->child.remove(r); // pµÄµÚr - 1¸ö¹Ø¼üÂë×ªÈëls£¬v²»ÔÙÊÇpµÄµÚr¸öº¢×Ó
+		ls->child.insert(ls->child.size(), v->child.remove(0));
+		if (ls->child[ls->child.size() - 1]) { // v×î×ó²àµÄº¢×Ó¹ı¼Ì¸øls×öÓÒ²àº¢×Ó
+			ls->child[ls->child.size() - 1]->parent = ls;
+		}
+		while (!v->key.empty()) { // vÊ£ÓàµÄ¹Ø¼üÂëºÍº¢×Ó£¬ÒÀ´Î×ªÈëls
+			ls->key.insert(ls->key.size(), v->key.remove(0));
+			ls->child.insert(ls->child.size(), v->child.remove(0));
+			if (ls->child[ls->child.size() - 1]) ls->child[ls->child.size() - 1]->parent = ls;
+		}
+		delete v; // ÊÍ·Åv
+	}
+	else { // ÓëÓÒĞÖµÜºÏ²¢
+		BTNodePosi(T) rs = p->child[r + 1]; // ÓÒĞÖµÜ±ØÈ»´æÔÚ
+		rs->key.insert(0, p->key.remove(r)); p->child.remove(r); // pµÄµÚr¸ö¹Ø¼üÂë×ªÈërs£¬v²»ÔÙÊÇpµÄµÚr¸öº¢×Ó
+		rs->child.insert(0, v->child.remove(v->child.size() - 1));
+		if (rs->child[0]) rs->child[0]->parent = rs; // vµÄ×î×ó²àº¢×Ó¹ı¼Ì¸øls×ö×îÓÒ²àº¢×Ó
+		while (!v->key.empty()) { // vÊ£ÓàµÄ¹Ø¼üÂëºÍº¢×Ó£¬ÒÀ´Î×ªÈërs
+			rs->key.insert(0, v->key.remove(v->key.size() - 1));
+			rs->child.insert(0, v->child.remove(v->child.size() - 1));
+			if (rs->child[0]) rs->child[0]->parent = rs;
+		}
+		delete v; // ÊÍ·Åv
+	}
+	solveUnderflow(p); // ÉÏÉıÒ»²ã£¬ÈçÓĞ±ØÒªÔò¼ÌĞø·ÖÁÑ¡ª¡ªÖÁ¶àµİ¹éO(logn)²ã
+	return;
 }
 
 template<typename T>
