@@ -25,9 +25,9 @@ _DSA_BEGIN
 #define sibling(p) /* 兄弟 */ \
 (IsLChild(*(p)) ? (p)->parent->rc : (p)->parent->lc)
 #define uncle(x) /* 叔叔 */ \
-(IsLChild(*((x)->parent)) ? (x)->parent->parent->rc : (x)->parent->parent->lc
+(IsLChild(*((x)->parent)) ? (x)->parent->parent->rc : (x)->parent->parent->lc)
 #define FromParentTo(x) /* 来自父亲的引用 */ \
-(IsRoot(x) ? _root : (IsLChild(x) ? (x).parent->lc : (x).parent->rc))
+(IsRoot(x) ? BinTree<T>::_root : (IsLChild(x) ? (x).parent->lc : (x).parent->rc))
 /* 与BinNode具有特定关系的节点及指针 */
 
 typedef enum { RB_RED, RB_BLACK } RBColor; // 节点颜色

@@ -5,5 +5,6 @@ using namespace std;
 using namespace dsa;
 
 int main() {
+	RedBlack<int> rb;
 	return 0;
 }

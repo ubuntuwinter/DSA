@@ -97,7 +97,7 @@ void RedBlack<T>::solveDoubleBlack(BinNodePosi(T) r) {
 	else { // 兄弟s为红：BB-3
 		s->color = RB_BLACK; p->color = RB_RED; // s转黑，p转红
 		BinNodePosi(T) t = IsLChild(*s) ? s->lc : s->rc; // 取t与其父s同侧
-		BST<T>::_hot = p; FromParentTo(*p) = rotateAt(t); // 对t及其父亲、祖父做平衡调整
+		BST<T>::_hot = p; FromParentTo(*p) = BST<T>::rotateAt(t); // 对t及其父亲、祖父做平衡调整
 		solveDoubleBlack(r); // 继续修正r处双黑——此时的p已转红，故后续只能是BB-1或BB-2R
 	}
 }
@@ -117,14 +117,14 @@ BinNodePosi(T) RedBlack<T>::insert(const T& e) { // 将e插入红黑树
 
 template<typename T>
 bool RedBlack<T>::remove(const T& e) { // 从红黑树中删除关键码e
-	BinNodePosi(T)& x = search(e); if (!x) return false; // 确认目标存在（留意对_hot的设置）
+	BinNodePosi(T)& x = BST<T>::search(e); if (!x) return false; // 确认目标存在（留意对_hot的设置）
 	BinNodePosi(T) r = removeAt(x, BST<T>::_hot); if (!(--BinTree<T>::_size)) return true; // 实施删除
 	// assert：_hot某一孩子刚被删除，且被r所指节点（可能是NULL）接替。以下检查是否失衡，并做必要调整
-	if (!_hot) { // 若刚被删除的根节点，则将其置黑，并更新黑高度
-		BinTree<T>::_root->color = RB_BLACK; updateHeight(_root); return true;
+	if (!BST<T>::_hot) { // 若刚被删除的根节点，则将其置黑，并更新黑高度
+		BinTree<T>::_root->color = RB_BLACK; updateHeight(BinTree<T>::_root); return true;
 	}
 	// assert：以下，原x（现r）必非根，_hot必非空
-	if (BlackHeightUpdated(*_hot)) return true; // 若所有祖先的黑深度依然平衡，则无需调整
+	if (BlackHeightUpdated(*BST<T>::_hot)) return true; // 若所有祖先的黑深度依然平衡，则无需调整
 	if (IsRed(r)) { // 否则，若r为红，则只需令其转黑
 		r->color = RB_BLACK; r->height++; return true;
 	}
