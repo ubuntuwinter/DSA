@@ -71,7 +71,7 @@ inline void BTree<T>::solveUnderflow(BTNodePosi(T) v) { // ¹Ø¼üÂëÉ¾³ıºóÈô½ÚµãÏÂÒ
 		if (!v->key.size() && v->child[0]) {
 			// µ«ÌÈÈô×÷ÎªÊ÷¸ùµÄvÒÑ²»º¬¹Ø¼üÂë£¬È´ÓĞ£¨Î¨Ò»µÄ£©·Ç¿Õº¢×Ó£¬Ôò
 			_root = v->child[0]; _root->parent = NULL; // Õâ¸ö½Úµã¿É±»Ìø¹ı
-			v->child[0] = NULL; delete v; // ²¢Òò²»ÔÙÓĞÓÃ¶ø±»Ïú»Ù
+			v->child[0] = NULL; release(v); // ²¢Òò²»ÔÙÓĞÓÃ¶ø±»Ïú»Ù
 		} // ÕûÌå¸ß¶È½µµÍÒ»²ã
 		return;
 	}
@@ -115,7 +115,7 @@ inline void BTree<T>::solveUnderflow(BTNodePosi(T) v) { // ¹Ø¼üÂëÉ¾³ıºóÈô½ÚµãÏÂÒ
 			ls->child.insert(ls->child.size(), v->child.remove(0));
 			if (ls->child[ls->child.size() - 1]) ls->child[ls->child.size() - 1]->parent = ls;
 		}
-		delete v; // ÊÍ·Åv
+		release(v); // ÊÍ·Åv
 	}
 	else { // ÓëÓÒĞÖµÜºÏ²¢
 		BTNodePosi(T) rs = p->child[r + 1]; // ÓÒĞÖµÜ±ØÈ»´æÔÚ
@@ -127,7 +127,7 @@ inline void BTree<T>::solveUnderflow(BTNodePosi(T) v) { // ¹Ø¼üÂëÉ¾³ıºóÈô½ÚµãÏÂÒ
 			rs->child.insert(0, v->child.remove(v->child.size() - 1));
 			if (rs->child[0]) rs->child[0]->parent = rs;
 		}
-		delete v; // ÊÍ·Åv
+		release(v); // ÊÍ·Åv
 	}
 	solveUnderflow(p); // ÉÏÉıÒ»²ã£¬ÈçÓĞ±ØÒªÔò¼ÌĞø·ÖÁÑ¡ª¡ªÖÁ¶àµİ¹éO(logn)²ã
 	return;
