@@ -6,5 +6,6 @@
 #define ListNodePosi(T)
 #define BinNodePosi(T)
 #define BTNodePosi(T)
+#define QlistNodePosi(T)
 #define NULL
 #define NULL ((void *)0)

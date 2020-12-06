@@ -28,6 +28,8 @@ template<typename T> struct BTNode; // B-树节点
 template<typename T> class BTree; // B-树
 template<typename T> class RedBlack; // 红黑树
 template<typename K, typename V> struct Dictionary; // 词典模板类
+template<typename T> struct QuadlistNode; // 四联表节点
+template<typename T> class Quadlist; // 四联表
 
 template<typename T>
 void swap(T& a, T& b) { // 交换a和b的值

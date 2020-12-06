@@ -158,6 +158,7 @@
     <ClInclude Include="pq.h" />
     <ClInclude Include="pq_complheap.h" />
     <ClInclude Include="pq_leftheap.h" />
+    <ClInclude Include="quadlistNode.h" />
     <ClInclude Include="redblack.h" />
     <ClInclude Include="splay.h" />
     <ClInclude Include="visit.h" />
