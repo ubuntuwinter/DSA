@@ -93,5 +93,8 @@
     <ClInclude Include="quadlistNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="quadlist.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
