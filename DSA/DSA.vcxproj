@@ -149,6 +149,7 @@
     <ClInclude Include="bst.h" />
     <ClInclude Include="btNode.h" />
     <ClInclude Include="bTree.h" />
+    <ClInclude Include="dictionary.h" />
     <ClInclude Include="dsa.h" />
     <ClInclude Include="entry.h" />
     <ClInclude Include="fib.h" />
