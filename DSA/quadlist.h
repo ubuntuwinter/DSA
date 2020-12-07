@@ -30,9 +30,9 @@ public:
 	QlistNodePosi(T) // 将*e作为p的后继、b的上邻插入
 		insertAfterAbove(T const& e, QlistNodePosi(T) p, QlistNodePosi(T) b = NULL);
 	// 遍历
-	void traverse((void*)(T&)); // 遍历各节点，依次实施指定操作（函数指针，只读或局部修改）
+	void traverse(void(*visit)(T&)); // 遍历各节点，依次实施指定操作（函数指针，只读或局部修改）
 	template<typename VST> // 操作器
-	void traverse(VST&); // 遍历各节点，依次实施指定操作（函数对象，可全局性修改节点）
+	void traverse(VST& visit); // 遍历各节点，依次实施指定操作（函数对象，可全局性修改节点）
 };
 
 template<typename T>
@@ -64,6 +64,17 @@ T Quadlist<T>::remove(QlistNodePosi(T) p) { // 删除Quadlist内位置p处的节点，返回
 template<typename T>
 QlistNodePosi(T) Quadlist<T>::insertAfterAbove(T const& e, QlistNodePosi(T) p, QlistNodePosi(T) b) { // 将e作为p的后继、b的上邻插入Quadlist
 	_size++; return p->insertAsSuccAbove(e, b); // 返回新节点位置（below = NULL）
+}
+
+template<typename T>
+void Quadlist<T>::traverse(void(*visit)(T&)) {
+	for (QlistNodePosi(T) p = header->succ; p != trailer; p = p->succ) visit(p->entry);
+}
+
+template<typename T>
+template<typename VST>
+void Quadlist<T>::traverse(VST& visit) {
+	for (QlistNodePosi(T) p = header->succ; p != trailer; p = p->succ) visit(p->entry);
 }
 
 _DSA_END

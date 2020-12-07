@@ -2,6 +2,7 @@
 #ifndef __ENTRY_H__
 #define __ENTRY_H__
 #include "dsa.h"
+#include <iostream>
 _DSA_BEGIN
 template<typename K, typename V>
 struct Entry { // 词条模板类
@@ -13,5 +14,12 @@ struct Entry { // 词条模板类
 	bool operator==(Entry<K, V> const& e) { return key == e.key; } // 判等器：等于
 	bool operator!=(Entry<K, V>const& e) { return key != e.key; } // 比较器：不等于
 };
+
+template<typename K, typename V>
+std::ostream& operator<<(std::ostream& out, const Entry<K, V>& entry) {
+	out << entry.key << ": " << entry.value;
+	return out;
+}
+
 _DSA_END
 #endif // !__ENTRY_H__
