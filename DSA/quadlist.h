@@ -46,5 +46,10 @@ void dsa::Quadlist<T>::init() { // Quadlist初始化，创建Quadlist对象时统一调用
 	_size = 0; // 记录规模
 }
 
+template<typename T>
+QlistNodePosi(T) Quadlist<T>::insertAfterAbove(T const& e, QlistNodePosi(T) p, QlistNodePosi(T) b) { // 将e作为p的后继、b的上邻插入Quadlist
+	_size++; return p->insertAsSuccAbove(e, b); // 返回新节点位置（below = NULL）
+}
+
 _DSA_END
 #endif // !__QUADLIST_H__
