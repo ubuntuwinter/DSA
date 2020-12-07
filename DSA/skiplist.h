@@ -16,7 +16,7 @@ protected:
 		QuadlistNode<Entry<K, V>>*& p,
 		K& k);
 public:
-	int size() const override { return empty ? 0 : last()->data->size(); } // 底层Quadlist的规模
+	int size() const override { return List<Quadlist<Entry<K, V>>*>::empty() ? 0 : List<Quadlist<Entry<K, V>>*>::last()->data->size(); } // 底层Quadlist的规模
 	int level() { return List<Quadlist<Entry<K, V>>*>::size(); } // 层高 == #Quadlist, 不一定要开放
 	bool put(K, V) override; // 插入（注意与Map有别——Skiplist允许词条重复，故必然成功）
 	V* get(K k) override; // 读取
@@ -49,18 +49,18 @@ bool Skiplist<K, V>::skipSearch(
 template<typename K, typename V>
 bool Skiplist<K, V>::put(K k, V v) { // 跳转表词条插入算法
 	Entry<K, V> e = Entry<K, V>(k, v); // 待插入的词条（将被随机地插入多个副本）
-	if (empty()) insertAsFirst(new Quadlist<Entry<K, V>>); // 插入首个Entry
-	ListNode<Quadlist<Entry<K, V>>*>* qlist = first(); // 从顶层四联表的
+	if (List<Quadlist<Entry<K, V>>*>::empty()) List<Quadlist<Entry<K, V>>*>::insertAsFirst(new Quadlist<Entry<K, V>>); // 插入首个Entry
+	ListNode<Quadlist<Entry<K, V>>*>* qlist = List<Quadlist<Entry<K, V>>*>::first(); // 从顶层四联表的
 	QuadlistNode<Entry<K, V>>* p = qlist->data->first(); // 从首节点出发
 	if (skipSearch(qlist, p, k)) // 查找适当的插入位置
 		while (p->below) p = p->below; // 若已有雷同词条，则需强制转到塔底
-	qlist = last(); // 以下，紧邻于p的右侧，一座新塔将自底而上逐层生长
+	qlist = List<Quadlist<Entry<K, V>>*>::last(); // 以下，紧邻于p的右侧，一座新塔将自底而上逐层生长
 	QuadlistNode<Entry<K, V>>* b = qlist->data->insertAfterAbove(e, p); // 新节点b即新塔基底
 	while (rand() & 1) { // 经投硬币，若确定新塔需要再长高一层，则
-		while (qlist->data->valid(p) && !p->above)) p = p->pred; // 找不出不低于此高度的最近前驱
+		while (qlist->data->valid(p) && !p->above) p = p->pred; // 找不出不低于此高度的最近前驱
 		if (!qlist->data->valid(p)) { // 若该前驱是header
-			if (qlist == first()) // 且当前已是最顶层，则意味着必须
-				insertAsFirst(new Quadlist <Entry<K, V>>); // 首先创建新的一层，然后
+			if (qlist == List<Quadlist<Entry<K, V>>*>::first()) // 且当前已是最顶层，则意味着必须
+				List<Quadlist<Entry<K, V>>*>::insertAsFirst(new Quadlist <Entry<K, V>>); // 首先创建新的一层，然后
 			p = qlist->pred->data->first()->pred; // 将p转至上一层Skiplist的header
 		}
 		else { // 否则，可径直
@@ -74,16 +74,16 @@ bool Skiplist<K, V>::put(K k, V v) { // 跳转表词条插入算法
 
 template<typename K, typename V>
 V* dsa::Skiplist<K, V>::get(K k) { // 跳转表词条查找算法
-	if (empty()) return NULL;
-	ListNode<Quadlist<Entry<K, V>>*>* qlist = first(); // 从顶层Quadlist的
-	QuadlistNode<Entry<K, V>>* q = qlist->data->first(); // 首节点开始
+	if (List<Quadlist<Entry<K, V>>*>::empty()) return NULL;
+	ListNode<Quadlist<Entry<K, V>>*>* qlist = List<Quadlist<Entry<K, V>>*>::first(); // 从顶层Quadlist的
+	QuadlistNode<Entry<K, V>>* p = qlist->data->first(); // 首节点开始
 	return skipSearch(qlist, p, k) ? &(p->entry.value) : NULL; // 查找并报告
 } // 有多个命中时靠后者优先
 
 template<typename K, typename V>
 bool Skiplist<K, V>::remove(K k) { // 跳转表词条删除算法
-	if (empty()) return false; // 空表情况
-	ListNode<Quadlist<Entry<K, V>>*>* qlist = first(); // 从顶层Quadlist的
+	if (List<Quadlist<Entry<K, V>>*>::empty()) return false; // 空表情况
+	ListNode<Quadlist<Entry<K, V>>*>* qlist = List<Quadlist<Entry<K, V>>*>::first(); // 从顶层Quadlist的
 	QuadlistNode<Entry<K, V>>* p = qlist->data->first(); // 首节点开始
 	if (!skipSearch(qlist, p, k)) return false; // 目标词条不存在，直接返回
 	do {
@@ -91,8 +91,8 @@ bool Skiplist<K, V>::remove(K k) { // 跳转表词条删除算法
 		qlist->data->remove(p); // 删除当前层节点
 		p = lower; qlist = qlist->succ; // 转入下一层
 	} while (qlist->succ); // 如上不断重复，直到塔基
-	while (!empty() && first()->data->empty()) { // 逐一地
-		List<Quadlist<Entry<K, V>>*>::remove(first()); // 清除已可能不含词条的顶层Quadlist 
+	while (!List<Quadlist<Entry<K, V>>*>::empty() && List<Quadlist<Entry<K, V>>*>::first()->data->empty()) { // 逐一地
+		List<Quadlist<Entry<K, V>>*>::remove(List<Quadlist<Entry<K, V>>*>::first()); // 清除已可能不含词条的顶层Quadlist 
 	}
 	return true; // 删除操作成功完成
 }
