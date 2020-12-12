@@ -36,7 +36,7 @@ public:
 };
 
 template<typename T>
-void dsa::Quadlist<T>::init() { // Quadlist初始化，创建Quadlist对象时统一调用
+void Quadlist<T>::init() { // Quadlist初始化，创建Quadlist对象时统一调用
 	header = new QuadlistNode<T>; // 创建头哨兵节点
 	trailer = new QuadlistNode<T>; // 创建尾哨兵节点
 	header->succ = trailer; header->pred = NULL; // 沿横向连接哨兵

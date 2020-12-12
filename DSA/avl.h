@@ -25,7 +25,7 @@ public:
 };
 
 template<typename T>
-BinNodePosi(T) dsa::AVL<T>::insert(const T& e) { // 将关键码e插入AVL树中
+BinNodePosi(T) AVL<T>::insert(const T& e) { // 将关键码e插入AVL树中
 	BinNodePosi(T)& x = BST<T>::search(e); if (x) return x; // 确认目标节点不存在
 	BinNodePosi(T) xx = x = new BinNode<T>(e, BST<T>::_hot); BinTree<T>::_size++; // 创建新节点x
 	// 此时，x的父亲_hot若增高，则其祖父有可能失衡

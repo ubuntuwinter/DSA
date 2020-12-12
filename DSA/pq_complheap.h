@@ -69,7 +69,7 @@ void PQ_ComplHeap<T>::insert(T e) { // 将词条插入完全二叉堆中
 }
 
 template<typename T>
-T dsa::PQ_ComplHeap<T>::getMax() { // 取优先级最高的词条
+T PQ_ComplHeap<T>::getMax() { // 取优先级最高的词条
 	return Vector<T>::_elem[0];
 }
 

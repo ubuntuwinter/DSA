@@ -73,7 +73,7 @@ bool Skiplist<K, V>::put(K k, V v) { // 跳转表词条插入算法
 }
 
 template<typename K, typename V>
-V* dsa::Skiplist<K, V>::get(K k) { // 跳转表词条查找算法
+V* Skiplist<K, V>::get(K k) { // 跳转表词条查找算法
 	if (List<Quadlist<Entry<K, V>>*>::empty()) return NULL;
 	ListNode<Quadlist<Entry<K, V>>*>* qlist = List<Quadlist<Entry<K, V>>*>::first(); // 从顶层Quadlist的
 	QuadlistNode<Entry<K, V>>* p = qlist->data->first(); // 首节点开始

@@ -151,7 +151,7 @@ bool Graph<Tv, Te>::TSort(int v, int& clock, Stack<Tv>* S) { // assert: 0 <= v <
 }
 
 template<typename Tv, typename Te> // 广度优先搜索BFS算法（全图）
-void dsa::Graph<Tv, Te>::bfs(int s) { // assert: 0 <= s < n
+void Graph<Tv, Te>::bfs(int s) { // assert: 0 <= s < n
 	reset(); int clock = 0; int v = s; // 初始化
 	do { // 逐一检查所有顶点
 		if (UNDISCOVERED == status(v)) // 一旦遇到尚未发现的顶点

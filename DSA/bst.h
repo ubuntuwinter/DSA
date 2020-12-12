@@ -84,7 +84,7 @@ BinNodePosi(T) BST<T>::rotateAt(BinNodePosi(T) v) { // v为非空孙辈节点
 }
 
 template<typename T>
-BinNodePosi(T)& dsa::BST<T>::search(const T& e) { // 在BST中查找关键码e
+BinNodePosi(T)& BST<T>::search(const T& e) { // 在BST中查找关键码e
 	return searchIn(BinTree<T>::_root, e, _hot = NULL);
 }
 
