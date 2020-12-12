@@ -155,6 +155,7 @@
     <ClInclude Include="fib.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="graphMatrix.h" />
+    <ClInclude Include="hashtable.h" />
     <ClInclude Include="pq.h" />
     <ClInclude Include="pq_complheap.h" />
     <ClInclude Include="pq_leftheap.h" />

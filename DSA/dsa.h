@@ -31,6 +31,7 @@ template<typename K, typename V> struct Dictionary; // 词典模板类
 template<typename T> struct QuadlistNode; // 四联表节点
 template<typename T> class Quadlist; // 四联表
 template<typename K, typename V> class Skiplist; // 跳转表
+template<typename K, typename V> class Hashtable; // 哈希表
 
 template<typename T>
 void swap(T& a, T& b) { // 交换a和b的值
