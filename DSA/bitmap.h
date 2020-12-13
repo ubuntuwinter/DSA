@@ -13,7 +13,7 @@ protected:
 	void init(int n) { M = new char[N = (n + 7) / 8]; memset(M, 0, N); }
 public:
 	Bitmap(int n = 8) { init(n); } // 按指定或默认规模创建比特图（为测试暂时选用较小的默认值）
-	Bitmap(char* file, int n) { // 按指定或默认规模，从指定文件中读取比特图
+	Bitmap(const char* file, int n) { // 按指定或默认规模，从指定文件中读取比特图
 		init(n); FILE* fp = fopen(file, "r"); fread(M, sizeof(char), N, fp); fclose(fp);
 	}
 	~Bitmap() { delete[] M; M = NULL; } // 析构时释放比特图空间
@@ -22,7 +22,7 @@ public:
 	void clear(int k) { expand(k); M[k >> 3] &= ~(0x80) >> (k & 0x07); }
 	bool test(int k) { expand(k); return M[k >> 3] & (0x80 >> (k & 0x07)); }
 
-	void dump(char* file) { // 将位图整体导出至指定文件，以便对此后的新位图批量初始化
+	void dump(const char* file) { // 将位图整体导出至指定文件，以便对此后的新位图批量初始化
 		FILE* fp = fopen(file, "w"); fwrite(M, sizeof(char), N, fp); fclose(fp);
 	}
 	char* bits2string(int n) { // 将前n位转换为字符串——
