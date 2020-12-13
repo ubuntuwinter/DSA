@@ -2,6 +2,7 @@
 #pragma once
 #ifndef __BITMAP_H__
 #define __BITMAP_H__
+#define _CRT_SECURE_NO_WARNINGS
 #include "dsa.h"
 #include <cstring>
 #include <cstdio>
