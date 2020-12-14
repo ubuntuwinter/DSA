@@ -13,8 +13,8 @@ private:
 	int M; // 桶数组容量
 	int N; // 词条数量
 	Bitmap* lazyRemoval; // 懒惰删除标记
-#define lazilyRemoved(x) (lazyRemoval->test(x));
-#define markAsRemoved(x) (lazyRemoval->set(x));
+#define lazilyRemoved(x) (lazyRemoval->test(x))
+#define markAsRemoved(x) (lazyRemoval->set(x))
 protected:
 	int probe4Hit(const K& k); // 沿关键码k对应的查找链，找到词条匹配的桶
 	int probe4Free(const K& k); // 沿关键码k对应的查找链，找到首个可用空桶
@@ -124,8 +124,8 @@ V* Hashtable<K, V>::get(K k) { // 散列表词条查找算法
 
 template<typename K, typename V>
 bool Hashtable<K, V>::remove(K k) { // 散列表词条删除算法
-	int r = probe4Hit(k); if (!ht[t]) return false; // 对应词条不存在时，无法删除
-	delete ht[t]; ht[t] = NULL; markAsRemoved(r); N--; return true;
+	int r = probe4Hit(k); if (!ht[r]) return false; // 对应词条不存在时，无法删除
+	delete ht[r]; ht[r] = NULL; markAsRemoved(r); N--; return true;
 	// 否则释放桶中词条，设置懒惰删除标记，并更新词条总数
 }
 
