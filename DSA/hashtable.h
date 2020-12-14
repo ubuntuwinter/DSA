@@ -5,6 +5,7 @@
 #include "dsa.h"
 #include "dictionary.h"
 #include "bitmap.h"
+#include "entry.h"
 _DSA_BEGIN
 template<typename K, typename V> // key、value
 class Hashtable : public Dictionary<K, V> { // 符合Dictionary接口的Hashtable模板类

@@ -11,7 +11,11 @@ class Bitmap { // 位图Bitmap类
 private:
 	char* M; int N; // 比特图所存放的空间M[]，容量为N*sizeof(char)*8比特
 protected:
-	void init(int n) { M = new char[N = (n + 7) / 8]; memset(M, 0, N); }
+	void init(int n) { 
+		N = (n + 7) / 8;
+		M = new char[N](); 
+		memset(M, 0, N); 
+	}
 public:
 	Bitmap(int n = 8) { init(n); } // 按指定或默认规模创建比特图（为测试暂时选用较小的默认值）
 	Bitmap(const char* file, int n) { // 按指定或默认规模，从指定文件中读取比特图
