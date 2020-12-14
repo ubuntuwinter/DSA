@@ -48,10 +48,10 @@ int primeNLT(int c, int n, const char* file) { // 根据file文件中的记录，在[c, n)
 	return c; // 若没有这样的素数，返回n（实用中不能如此简化处理）
 }
 
-/**
+/******************************************************
 * 沿关键码k对应的查找连，找到与之匹配的桶（供查找和删除词条时调用）
 * 试探策略多种多样，可灵活选取；这里仅以线性试探策略为例
-*/
+******************************************************/
 template<typename K, typename V>
 int Hashtable<K, V>::probe4Hit(const K& k) {
 	int r = hashCode(k) % M; // 从起始桶（按除余法确定）出发
@@ -59,6 +59,37 @@ int Hashtable<K, V>::probe4Hit(const K& k) {
 		r = (r + 1) % M; // 沿查找链试探：跳过所有冲突的桶，以及带有懒惰删除标记的桶
 	}
 	return r; // 调用者根据ht[r]是否为空，即可判断查找是否成功
+}
+
+/******************************************************
+* 沿关键码k对应的查找连，找到首个可用桶（仅供插入词条时调用）
+* 试探策略多种多样，可灵活选取；这里仅以线性试探策略为例
+******************************************************/
+template<typename K, typename V>
+int Hashtable<K, V>::probe4Free(const K& k) {
+	int r = hashCode(k) % M; // 从起始桶（按除余法确定）出发
+	while (ht[r]) r = (r + 1) % M; // 沿查找链逐桶试探，直到首个空桶（无论是否带有懒惰删除标记）
+	return r; // 为保证空桶总能找到，装填因子及散列表长需要合理设置
+}
+
+/******************************************************
+* 重散列算法：装填因子过大时，采用“逐一取出再插入”的朴素策略，对桶数组扩容
+* 不可简单地（通过memcpy()）将原桶数组复制到新桶数组（比如前端），否则存在两个问题
+* 1) 会继承原有冲突；2) 可能导致查找链在后端断裂——即便为所有扩容桶设置懒惰删除标志也无济于事
+******************************************************/
+template<typename K, typename V>
+void Hashtable<K, V>::rehash() { 
+	int old_capacity = M; Entry<K, V>** old_ht = ht;
+	M = primeNLT(2 * M, 1048576, "prime-1048576-bitmap.txt"); // 容量至少加倍
+	N = 0; ht = new Entry<K, V>*[M]; memset(ht, 0, sizeof(Entry<K, V>*) * M); // 新桶数组
+	delete lazyRemoval; lazyRemoval = new Bitmap(M); // 新开懒惰删除标记比特图
+	for (int i = 0; i < old_capacity; i++) { // 扫描原数组
+		if (old_ht[i]) { // 将非空桶中的词条逐一
+			put(old_ht[i]->key, old_ht[i]->value); // 插入至新的桶数组
+			delete old_ht[i]; // 释放原桶数组中内容
+		}
+	}
+	delete[] old_ht; // 释放原桶数组
 }
 
 template<typename K, typename V>
@@ -89,6 +120,13 @@ bool Hashtable<K, V>::put(K k, V v) { // 散列表词条插入
 template<typename K, typename V>
 V* Hashtable<K, V>::get(K k) { // 散列表词条查找算法
 	int r = probe4Hit(k); return ht[r] ? &(ht[r]->value) : NULL; // 禁止词条的key值雷同
+}
+
+template<typename K, typename V>
+bool Hashtable<K, V>::remove(K k) { // 散列表词条删除算法
+	int r = probe4Hit(k); if (!ht[t]) return false; // 对应词条不存在时，无法删除
+	delete ht[t]; ht[t] = NULL; markAsRemoved(r); N--; return true;
+	// 否则释放桶中词条，设置懒惰删除标记，并更新词条总数
 }
 
 _DSA_END
