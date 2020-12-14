@@ -164,6 +164,7 @@
     <ClInclude Include="redblack.h" />
     <ClInclude Include="skiplist.h" />
     <ClInclude Include="splay.h" />
+    <ClInclude Include="string.h" />
     <ClInclude Include="visit.h" />
     <ClInclude Include="queue.h" />
     <ClInclude Include="list.h" />
