@@ -37,7 +37,7 @@ static size_t hashCode(char s[]) { // 生成字符串的循环移位散列码（cyclic shift h
 	for (size_t n = strlen(s), i = 0; i < n; i++) { // 自左向右，逐一处理每一字符
 		h = (h << 5) | (h >> 27); h += (int)s[i]; // 散列码循环左移5位，再累加当前字符
 	}
-	return (size_t)h; // 如此所得的散列码，实际上可理解位近似的“多项式散列码”
+	return (size_t)h; // 如此所得的散列码，实际上可理解为近似的“多项式散列码”
 }
 
 int primeNLT(int c, int n, const char* file) { // 根据file文件中的记录，在[c, n)内取最小的素数

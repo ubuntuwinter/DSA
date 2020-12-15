@@ -42,6 +42,23 @@ int match_BruteForce2(char* P, char* T) { // 串匹配算法（Brute-force-2）
 	}
 }
 
+int* buildNext(char* P) { // 构造模式串P的next表
+	size_t m = strlen(P), j = 0; // “主”串指针
+	int* N = new int[m]; // next表
+	int t = N[0] = -1; // 模式串指针
+	while (j < m - 1) {
+		if (0 > t || P[j] == P[t]) {
+			j++; t++;
+			// N[j] = t;
+			N[j] = (P[j] != P[t] ? t : N[t]);
+		}
+		else {
+			t = N[t];
+		}
+	}
+	return N;
+}
+
 int match_KMP(char* P, char* T) { // KMP算法
 	int* next = buildNext(P); // 构造next表
 	int n = (int)strlen(T), i = 0; // 文本串指针
@@ -57,5 +74,6 @@ int match_KMP(char* P, char* T) { // KMP算法
 	delete[] next; // 释放next表
 	return i - j;
 }
+
 _DSA_END
 #endif // !__STRING_H__
