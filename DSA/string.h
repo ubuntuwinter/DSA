@@ -40,6 +40,7 @@ int match_BruteForce2(char* P, char* T) { // 串匹配算法（Brute-force-2）
 		}
 		if (j >= m) break; // 找到匹配子串
 	}
+	return i;
 }
 
 int* buildNext(char* P) { // 构造模式串P的next表
