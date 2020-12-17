@@ -157,7 +157,7 @@ HashCode prepareDm(size_t m) { // Ô¤´¦Àí£º¼ÆËãR^(m - 1) % M£¨½öĞèµ÷ÓÃÒ»´Î£¬²»±ØÓ
 }
 void updateHash(HashCode& hashT, char* T, size_t m, size_t k, HashCode Dm) {
 	hashT = (hashT - DIGIT(T, k - 1) * Dm) % M; // ÔÚÇ°Ò»Ö¸ÎÆ»ù´¡ÉÏ£¬È¥³ıÊ×Î»T[k - 1]
-	hashT = (hashT + DIGIT(T, k + m - 1)) % M; // Ìí¼ÓÄ©Î»T[k + m - 1]
+	hashT = (hashT * R + DIGIT(T, k + m - 1)) % M; // Ìí¼ÓÄ©Î»T[k + m - 1]
 	if (0 > hashT) hashT += M; // È·±£É¢ÁĞÂëÂäÔÚºÏ·¨Çø¼ä
 }
 

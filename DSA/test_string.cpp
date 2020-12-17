@@ -12,5 +12,9 @@ int main() {
 	cout << "Brute Force 2: " << match_BruteForce2(P, T) << endl;
 	cout << "KMP: " << match_KMP(P, T) << endl;
 	cout << "BM: " << match_BM(P, T) << endl;
+
+	char TT[] = "271828182845";
+	char PP[] = "18284";
+	cout << "KP: " << match_KR(PP, TT) << endl;
 	return 0;
 }
