@@ -107,7 +107,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test_string.cpp">
+    <ClCompile Include="test_vector.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
